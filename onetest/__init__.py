@@ -1,6 +1,6 @@
 from mcdreforged import PluginServerInterface
 
-from my_plugin import my_lib
+from onetest import my_lib
 
 
 def on_load(server: PluginServerInterface, old):
