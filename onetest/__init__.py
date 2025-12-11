@@ -1,6 +1,7 @@
-from mcdreforged import Info, PluginServerInterface
 from fastapi import FastAPI
 from enum import Enum
+
+from mcdreforged import Info, PluginServerInterface, ServerInterface
 
 app = FastAPI()
 
@@ -69,6 +70,25 @@ async def get_server_players():
     else:
         return server_status.name
 
+
+@app.put('/server/start')
+async def server_start():
+    if server_status != ServerStatus.DOWN:
+        return '无效的启动操作，当前服务器状态为 {}.'.format(server_status)
+    ServerInterface.as_basic_server_interface().start()
+    return '已发送指令，请查看在线状态并耐心等待。'
+
+@app.put('/server/restart')
+async def server_restart():
+    ServerInterface.as_basic_server_interface().restart()
+    return '已发送指令，请查看在线状态并耐心等待。'
+
+@app.put('/server/stop')
+async def server_stop():
+    ServerInterface.as_basic_server_interface().stop()
+    return '已发送指令，请查看在线状态并耐心等待。'
+
+
 def mount_app(server):
     # save plugin id and fastapi_mcdr instance
     id_ = server.get_self_metadata().id
@@ -106,4 +126,3 @@ def on_unload(server):
 #         server.restart()
 #     if (server.get_permission_level(info) == 4):
 #         server.broadcast('broadcast msg')
-
