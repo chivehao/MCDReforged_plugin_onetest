@@ -63,7 +63,7 @@ def on_player_left(server: PluginServerInterface, player: str):
 @app.get("/server/players")
 async def get_server_players():
     global players
-    return players
+    # return players
     if server_status == ServerStatus.UP:
         return players
     else:
